@@ -4,8 +4,8 @@
 var io = require('socket.io-client');
 
 var connect_init = {
-    'apk_id' : '123456789abc',
-    'camera_key' : 'yyy'
+    'camera_id' : '123456789abc',
+    'request_key' : 'yyy'
 }
 
 var connect_params = {
@@ -15,7 +15,7 @@ var connect_params = {
     'filename' : 'filename'
 }
 
-var socket = io.connect("http://localhost:3000/camera");
+var socket = io.connect("http://localhost:3001/camera");
 
 socket.on('connect', function () {
     socket.emit('connect_init', connect_init);

@@ -7,24 +7,22 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var push = require('./routes/push');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
+app.set('view engine', 'jade');
 app.use(favicon());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.use('/camera_manager', routes);
 app.use('/', users);
-// var push = require('./routes/push');
-// app.use('/camera_control', push);
 
 
 /// catch 404 and forward to error handler

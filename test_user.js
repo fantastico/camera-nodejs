@@ -4,11 +4,11 @@
 var io = require('socket.io-client');
 
 var connect_request = {
-    'apk_id' : '123456789abc',
-    'user_key' : 'xxx'
+    'camera_id' : 'xxx',
+    'user_key' : '4L5UPcilAFcodrAI0001426510813117'
 }
 
-var socket = io.connect("http://localhost:3000/user");
+var socket = io.connect("http://localhost:3001/user");
 
 socket.on('connect', function () {
     socket.emit('connect_request', connect_request);

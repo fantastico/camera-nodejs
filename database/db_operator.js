@@ -15,11 +15,11 @@ function register(params, callback) {
                     throw err;
                 }
 
-                var values = [params.apk_id, util.gen_key(), util.gen_key(), params.ip, params.max_users,
-                    util.gen_key(), util.gen_key(), params.ip, params.max_users];
+                var values = [params.camera_id, util.gen_key(), util.gen_key(), params.ip, params.max_users, 'Online',
+                    params.ip, params.max_users, 'Online'];
 
-                var sql = "INSERT INTO camera (apk_id, user_key, camera_key, ip, max_users) " +
-                    "VALUES(?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE user_key = ?, camera_key = ?, ip = ?, max_users = ?";
+                var sql = "INSERT INTO camera (camera_id, user_key, request_key, ip, max_users, status) " +
+                    "VALUES(?, ?, ?, ?, ?, ?) ON DUPLICATE KEY UPDATE ip = ?, max_users = ?, status = ?";
 
                 conn.query(sql, values, function (err, result) {
                     if (err) {
@@ -35,9 +35,9 @@ function register(params, callback) {
                         }
                         console.log('success!');
                         var json_values = {
-                            apk_id: values[0],
+                            camera_id: values[0],
                             user_key: values[1],
-                            camera_key: values[2],
+                            request_key: values[2],
                             ip: values[3],
                             max_users: values[4]
                         };
@@ -51,8 +51,8 @@ function register(params, callback) {
 
 function checkCameraKey(params, callback) {
     pool.getConnection(function (err, conn) {
-        var values = [params.apk_id]
-        var sql = "SELECT camera_key FROM camera where apk_id = ?";
+        var values = [params.camera_id]
+        var sql = "SELECT camera_key FROM camera where camera_id = ?";
         conn.query(sql, values, function (err, result) {
             if(result == null || result.length < 1 || params.camera_key != result[0].camera_key){
                 callback(false);
@@ -65,8 +65,8 @@ function checkCameraKey(params, callback) {
 
 function checkUserKey(params, callback) {
     pool.getConnection(function (err, conn) {
-        var values = [params.apk_id]
-        var sql = "SELECT user_key, camera_key FROM camera where apk_id = ?";
+        var values = [params.camera_id]
+        var sql = "SELECT user_key, camera_key FROM camera where camera_id = ?";
         conn.query(sql, values, function (err, result) {
             if(result == null || result.length < 1 || params.user_key != result[0].user_key){
                 callback(false);

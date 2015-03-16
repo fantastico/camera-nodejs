@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-require('routes/push');
 var debug = require('debug')('camera_manager');
 var app = require('../app');
 

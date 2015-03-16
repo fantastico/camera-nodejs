@@ -66,13 +66,13 @@ DROP TABLE IF EXISTS `camera`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `camera` (
-  `apk_id` char(32) CHARACTER SET ascii NOT NULL,
+  `camera_id` char(32) CHARACTER SET ascii NOT NULL,
   `user_key` char(32) CHARACTER SET ascii DEFAULT NULL,
   `request_key` char(32) DEFAULT NULL,
   `status` enum('Online','Offline') CHARACTER SET ascii DEFAULT NULL,
   `ip` varchar(255) CHARACTER SET ascii DEFAULT NULL,
   `max_users` tinyint(255) DEFAULT NULL,
-  PRIMARY KEY (`apk_id`)
+  PRIMARY KEY (`camera_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -173,9 +173,9 @@ DROP TABLE IF EXISTS `user_to_camera`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user_to_camera` (
   `username` varchar(50) NOT NULL,
-  `apk_id` char(32) CHARACTER SET ascii NOT NULL,
-  PRIMARY KEY (`username`,`apk_id`),
-  KEY `FK_apk_id_idx` (`apk_id`),
+  `camera_id` char(32) CHARACTER SET ascii NOT NULL,
+  PRIMARY KEY (`username`,`camera_id`),
+  KEY `FK_camera_id_idx` (`camera_id`),
   KEY `FK_username_idx` (`username`),
   CONSTRAINT `FK_username` FOREIGN KEY (`username`) REFERENCES `app_user` (`username`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

@@ -9,11 +9,9 @@ var db = require('../database/db_operator');
 var io = new Server(httpserver);
 var camera_list = {};
 
-var test;
 io.of('/camera').on('connection', function (socket) {
-    test = socket;
     socket.on('connect_init',function (data) {
-        if(typeof(data['apk_id']) == "undefined" || typeof(data['camera_key']) == "undefined"){
+        if(typeof(data['camera_id']) == "undefined" || typeof(data['request_key']) == "undefined"){
             socket.disconnect('unauthorized');
             return;
         }
@@ -22,16 +20,15 @@ io.of('/camera').on('connection', function (socket) {
                 socket.disconnect('unauthorized');
                 return;
             }
-            camera_list[data['apk_id']] = socket.id;
+            camera_list[data['camera_id']] = socket.id;
             socket.on('disconnect', function(){
-                delete camera_list[data['apk_id']];
+                delete camera_list[data['camera_id']];
             });
             socket.join(socket.id);
             socket.emit('connect_init_success', 'connect_init_success');
-
         });
 
-        console.log('receive: ' + data['apk_id']  );
+        console.log('receive: ' + data['camera_id']  );
     });
 
     socket.on('connect_params',function (data) {
@@ -41,7 +38,7 @@ io.of('/camera').on('connection', function (socket) {
 
 io.of('/user').on('connection', function (socket) {
     socket.on('connect_request',function (data) {
-        if(typeof(data['apk_id']) == "undefined" || typeof(data['user_key']) == "undefined"){
+        if(typeof(data['camera_id']) == "undefined" || typeof(data['user_key']) == "undefined"){
             socket.disconnect('unauthorized');
             return;
         }
@@ -51,17 +48,17 @@ io.of('/user').on('connection', function (socket) {
                 return;
             }
 
-            var socketId = camera_list[data['apk_id']];
+            var socketId = camera_list[data['camera_id']];
             if(socketId == null){
                 socket.disconnect('unauthorized');
                 return;
             }
 
-            io.of('/camera').to(socketId).emit('connect_request', {'socketId' : socket.id});
+            io.of('/camera').to(socketId).emit('connect_request', {'socketId' : socket.id, 'user_key':data['user_key']});
         });
 
-        console.log('receive: ' + data['apk_id']  );
+        console.log('receive: ' + data['camera_id']  );
     });
 });
 
-io.listen(3000);
+io.listen(3001);
