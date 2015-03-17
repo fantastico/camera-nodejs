@@ -3,10 +3,10 @@
  */
 
 module.exports = {
-    host: '104.148.70.17',
+    host: '120.24.244.105',
     database: 'camera_manager',
-    user: 'ken',
-    password: 'ken123',
-    debug: false,
+    user: 'test',
+    password: 'ipctest356',
+    debug: true,
     connectionLimit: 5
 };

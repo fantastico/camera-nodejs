@@ -5,6 +5,7 @@ var app = require('express')();
 var httpserver = require('http').createServer(app);
 var Server = require('socket.io');
 var db = require('../database/db_operator');
+var debug = require('debug')('camera_manager');
 
 var io = new Server(httpserver);
 var camera_list = {};
@@ -28,7 +29,7 @@ io.of('/camera').on('connection', function (socket) {
             socket.emit('connect_init_success', 'connect_init_success');
         });
 
-        console.log('receive: ' + data['camera_id']  );
+        debug('receive: ' + data['camera_id'] );
     });
 
     socket.on('connect_params',function (data) {
@@ -57,7 +58,7 @@ io.of('/user').on('connection', function (socket) {
             io.of('/camera').to(socketId).emit('connect_request', {'socketId' : socket.id, 'user_key':data['user_key']});
         });
 
-        console.log('receive: ' + data['camera_id']  );
+        debug('receive: ' + data['camera_id']  );
     });
 });
 
